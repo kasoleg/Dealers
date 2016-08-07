@@ -33,6 +33,10 @@ public class DealersFragment extends BaseFragment {
     private boolean distance = false;
     private Location myLocation;
 
+    public List<Dealer> getDealers() {
+        return dealers;
+    }
+
     public static DealersFragment newInstance(List<Dealer> dealers, Location location) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(EXTRA_DEALERS, (ArrayList<? extends Parcelable>) dealers);
