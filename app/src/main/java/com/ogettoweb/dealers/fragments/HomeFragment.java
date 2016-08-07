@@ -1,6 +1,7 @@
 package com.ogettoweb.dealers.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,14 +25,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.ogettoweb.dealers.R;
 import com.ogettoweb.dealers.databinding.FragmentHomeBinding;
+import com.ogettoweb.dealers.dialogs.DealersProgressDialog;
+import com.ogettoweb.dealers.models.Dealer;
+import com.ogettoweb.dealers.network.DealersAsyncTask;
 
-public class HomeFragment extends Fragment implements LocationListener {
+import java.util.List;
+
+public class HomeFragment extends Fragment implements LocationListener, OnMapReadyCallback {
     final int PERMISSION_LOCATION = 0;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private FragmentHomeBinding binding;
     private LocationManager locationManager;
+    private List<Dealer> dealers;
+    private GoogleMap map;
+    private DealersProgressDialog progressDialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -45,6 +65,14 @@ public class HomeFragment extends Fragment implements LocationListener {
         SpannableString spanString = new SpannableString(binding.dealers.getText());
         spanString.setSpan(new UnderlineSpan(), 0, spanString.length() - 2, 0);
         binding.dealers.setText(spanString);
+
+        if (checkPlayServices(getActivity())) {
+            binding.map.getMapAsync(this);
+            binding.map.onCreate(savedInstanceState);
+            binding.map.onResume();
+            progressDialog = new DealersProgressDialog(getContext(), "Loading geo location...");
+            progressDialog.show();
+        }
 
         return binding.getRoot();
     }
@@ -81,13 +109,13 @@ public class HomeFragment extends Fragment implements LocationListener {
     private void askForLocation() {
         if (isLocationAllowed(getContext())) {
             String provider = locationManager.getBestProvider(new Criteria(), false);
-            locationManager.requestLocationUpdates(provider, 3000, 5, this);
+            locationManager.requestLocationUpdates(provider, 10000, 100, this);
         } else {
             requestLocationPermission();
         }
     }
 
-    /* Remove the locationlistener updates when Activity is paused */
+
     @Override
     public void onPause() {
         super.onPause();
@@ -98,9 +126,15 @@ public class HomeFragment extends Fragment implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        int lat = (int) (location.getLatitude());
-        int lng = (int) (location.getLongitude());
-        Toast.makeText(getContext(), "Latitude = " + lat + " Longitude = " + lng, Toast.LENGTH_SHORT).show();
+        if (map != null) {
+            progressDialog.hide();
+            LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            map.addMarker(new MarkerOptions()
+                    .position(currentPosition));
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentPosition).zoom(12.5f).build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+            map.animateCamera(cameraUpdate);
+        }
     }
 
     @Override
@@ -137,5 +171,34 @@ public class HomeFragment extends Fragment implements LocationListener {
                 break;
             }
         }
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        new DealersAsyncTask(getActivity()) {
+            @Override
+            protected void onPostExecute(List<Dealer> dealers) {
+                super.onPostExecute(dealers);
+                for (Dealer dealer : dealers) {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(dealer.getLatitude(), dealer.getLongitude()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
+                }
+                map = googleMap;
+            }
+        }.execute();
+    }
+
+    private boolean checkPlayServices(Activity activity) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(activity);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            }
+            return false;
+        }
+        return true;
     }
 }
