@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -41,7 +43,9 @@ import com.ogettoweb.dealers.dialogs.DealersProgressDialog;
 import com.ogettoweb.dealers.models.Dealer;
 import com.ogettoweb.dealers.network.DealersAsyncTask;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment implements LocationListener, OnMapReadyCallback {
     final int PERMISSION_LOCATION = 0;
@@ -134,6 +138,14 @@ public class HomeFragment extends Fragment implements LocationListener, OnMapRea
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentPosition).zoom(12.5f).build();
             CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
             map.animateCamera(cameraUpdate);
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(currentPosition.latitude, currentPosition.longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            binding.city.setText(addresses.get(0).getAddressLine(1));
         }
     }
 

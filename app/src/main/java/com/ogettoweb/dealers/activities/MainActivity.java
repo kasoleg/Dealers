@@ -25,17 +25,17 @@ public class MainActivity extends BaseActivity {
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         //binding.toolbar.setNavigationOnClickListener(this);
 
-        pushFragment(HomeFragment.newInstance(), true, HomeFragment.class.getSimpleName());
+        pushFragment(HomeFragment.newInstance(), true, HomeFragment.class.toString());
 
         binding.setClick(new MainActivityHandlers() {
             @Override
             public void onHomeClick(View view) {
-                pushFragment(HomeFragment.newInstance(), true, HomeFragment.class.getSimpleName());
+                pushFragment(HomeFragment.newInstance(), true, HomeFragment.class.toString());
             }
 
             @Override
             public void onCartClick(View view) {
-                pushFragment(CartFragment.newInstance(), true, CartFragment.class.getSimpleName());
+                pushFragment(CartFragment.newInstance(), true, CartFragment.class.toString());
             }
 
             @Override
