@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/city_layout"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_heightPercent="10%">
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:text="Ростов-на-Дону" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/dashed_line"
+                android:layerType="software" />
+
+        </LinearLayout>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            android:layout_below="@+id/city_layout"
+            app:layout_heightPercent="80%"
+            app:layout_widthPercent="100%" />
+
+        <TextView
+            android:id="@+id/dealers"
+            android:layout_below="@+id/map"
+            android:gravity="center"
+            android:text="@string/dealers_list"
+            android:textStyle="italic"
+            app:layout_heightPercent="10%"
+            app:layout_widthPercent="100%" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+</layout>

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Dealers</string>
+    <string name="search">Search</string>
+    <string name="dealers">Дилеры</string>
+    <string name="dealers_list">список дилеров ></string>
+    <string name="coordinats_message">App uses geo location. Enable it?</string>
+    <string name="enable">Enable</string>
+    <string name="exit">Exit</string>
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="unavailable_network">Network is unavailable</string>
+    <string name="ok">Ok</string>
 </resources>
