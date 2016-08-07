@@ -9,4 +9,7 @@
     <string name="location_permission_denied">Location permission denied</string>
     <string name="unavailable_network">Network is unavailable</string>
     <string name="ok">Ok</string>
+    <string name="alphabet">По алфавиту</string>
+    <string name="distance">По расстоянию</string>
+    <string name="on_map">на карте</string>
 </resources>

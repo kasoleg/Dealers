@@ -17,6 +17,10 @@ public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
 
+    public ActivityMainBinding getBinding() {
+        return binding;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,17 +29,17 @@ public class MainActivity extends BaseActivity {
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         //binding.toolbar.setNavigationOnClickListener(this);
 
-        pushFragment(HomeFragment.newInstance(), true, HomeFragment.class.toString());
+        pushFragment(HomeFragment.newInstance(), false, HomeFragment.class.toString());
 
         binding.setClick(new MainActivityHandlers() {
             @Override
             public void onHomeClick(View view) {
-                pushFragment(HomeFragment.newInstance(), true, HomeFragment.class.toString());
+                pushFragment(HomeFragment.newInstance(), false, HomeFragment.class.toString());
             }
 
             @Override
             public void onCartClick(View view) {
-                pushFragment(CartFragment.newInstance(), true, CartFragment.class.toString());
+                pushFragment(CartFragment.newInstance(), false, CartFragment.class.toString());
             }
 
             @Override

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="dealer"
+            type="com.ogettoweb.dealers.models.Dealer" />
+
+    </data>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/dealer_name"
+            android:layout_height="wrap_content"
+            android:paddingRight="5dp"
+            android:text="@{dealer.company}"
+            app:layout_widthPercent="50%"
+            tools:text="Фбрис-Строй ЗАО" />
+
+        <TextView
+            android:id="@+id/dealer_goods"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/dealer_name"
+            android:text="@{dealer.getGoodsAsString}"
+            android:textStyle="italic"
+            app:layout_widthPercent="50%"
+            tools:text="вся продукция" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+</layout>
