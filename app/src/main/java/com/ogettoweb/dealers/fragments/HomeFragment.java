@@ -38,8 +38,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ogettoweb.dealers.R;
+import com.ogettoweb.dealers.activities.BaseActivity;
 import com.ogettoweb.dealers.databinding.FragmentHomeBinding;
 import com.ogettoweb.dealers.dialogs.DealersProgressDialog;
+import com.ogettoweb.dealers.handlers.HomeFragmentHandlers;
 import com.ogettoweb.dealers.models.Dealer;
 import com.ogettoweb.dealers.network.DealersAsyncTask;
 
@@ -47,15 +49,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class HomeFragment extends Fragment implements LocationListener, OnMapReadyCallback {
+public class HomeFragment extends BaseFragment implements LocationListener, OnMapReadyCallback {
     final int PERMISSION_LOCATION = 0;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private FragmentHomeBinding binding;
     private LocationManager locationManager;
-    private List<Dealer> dealers;
+    private List<Dealer> dealersList;
     private GoogleMap map;
     private DealersProgressDialog progressDialog;
+    private LatLng currentPosition;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -77,6 +80,18 @@ public class HomeFragment extends Fragment implements LocationListener, OnMapRea
             progressDialog = new DealersProgressDialog(getContext(), "Loading geo location...");
             progressDialog.show();
         }
+
+        binding.setClick(new HomeFragmentHandlers() {
+            @Override
+            public void onDealersClick(View view) {
+                Location myLocation = new Location("");
+                myLocation.setLatitude(currentPosition.latitude);
+                myLocation.setLongitude(currentPosition.longitude);
+                ((BaseActivity) getActivity()).pushFragment(DealersFragment.newInstance(dealersList, myLocation), true, DealersFragment.class.toString());
+            }
+        });
+
+        title = "";
 
         return binding.getRoot();
     }
@@ -132,7 +147,7 @@ public class HomeFragment extends Fragment implements LocationListener, OnMapRea
     public void onLocationChanged(Location location) {
         if (map != null) {
             progressDialog.hide();
-            LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
             map.addMarker(new MarkerOptions()
                     .position(currentPosition));
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentPosition).zoom(12.5f).build();
@@ -191,6 +206,7 @@ public class HomeFragment extends Fragment implements LocationListener, OnMapRea
             @Override
             protected void onPostExecute(List<Dealer> dealers) {
                 super.onPostExecute(dealers);
+                dealersList = dealers;
                 for (Dealer dealer : dealers) {
                     googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(dealer.getLatitude(), dealer.getLongitude()))
