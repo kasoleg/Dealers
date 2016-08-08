@@ -61,12 +61,13 @@ public class DealersFragment extends BaseFragment {
             }
         }
 
-        final DealersAdapter adapter = new DealersAdapter(dealers);
+        final DealersAdapter adapter = new DealersAdapter(getActivity(), dealers, myLocation);
         binding.list.setAdapter(adapter);
         binding.list.addItemDecoration(new DividerItemDecoration(getContext(), null));
         binding.list.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        title = getString(R.string.on_map);
+        back_title = getString(R.string.on_map);
+        title = getString(R.string.dealers);
 
         binding.setClick(new DealersFragmentHandlers() {
             @Override

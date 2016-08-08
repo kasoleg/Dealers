@@ -9,12 +9,17 @@
             name="dealer"
             type="com.ogettoweb.dealers.models.Dealer" />
 
+        <variable
+            name="click"
+            type="com.ogettoweb.dealers.handlers.ItemDealerHandlers" />
+
     </data>
 
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:onClick="@{click::onDealerClick}"
         android:orientation="vertical"
         android:paddingBottom="20dp"
         android:paddingLeft="15dp"
@@ -24,6 +29,7 @@
         <TextView
             android:id="@+id/dealer_name"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:paddingRight="5dp"
             android:text="@{dealer.company}"
             app:layout_widthPercent="50%"
@@ -32,6 +38,7 @@
         <TextView
             android:id="@+id/dealer_goods"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/dealer_name"
             android:text="@{dealer.getGoodsAsString}"
             android:textStyle="italic"

@@ -34,13 +34,14 @@
                     tools:text="на карте" />
 
                 <TextView
+                    android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/dealers"
                     android:textColor="@android:color/black"
                     android:textSize="22sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic"
+                    tools:text="@string/dealers" />
 
             </RelativeLayout>
 

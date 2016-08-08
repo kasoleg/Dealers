@@ -2,7 +2,7 @@
     <string name="app_name">Dealers</string>
     <string name="search">Search</string>
     <string name="dealers">Дилеры</string>
-    <string name="dealers_list">список дилеров ></string>
+    <string name="dealers_list_arrow">список дилеров ></string>
     <string name="coordinats_message">App uses geo location. Enable it?</string>
     <string name="enable">Enable</string>
     <string name="exit">Exit</string>
@@ -12,4 +12,9 @@
     <string name="alphabet">По алфавиту</string>
     <string name="distance">По расстоянию</string>
     <string name="on_map">на карте</string>
+    <string name="dealers_list">список дилеров</string>
+    <string name="goods">Продукция:</string>
+    <string name="contacts">Контакты:</string>
+    <string name="a">65%</string>
+    <string name="b">55%</string>
 </resources>

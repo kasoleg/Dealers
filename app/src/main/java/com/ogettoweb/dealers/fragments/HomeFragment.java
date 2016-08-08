@@ -44,6 +44,7 @@ import com.ogettoweb.dealers.dialogs.DealersProgressDialog;
 import com.ogettoweb.dealers.handlers.HomeFragmentHandlers;
 import com.ogettoweb.dealers.models.Dealer;
 import com.ogettoweb.dealers.network.DealersAsyncTask;
+import com.ogettoweb.dealers.utils.PlayServicesUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,7 +52,6 @@ import java.util.Locale;
 
 public class HomeFragment extends BaseFragment implements LocationListener, OnMapReadyCallback {
     final int PERMISSION_LOCATION = 0;
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private FragmentHomeBinding binding;
     private LocationManager locationManager;
@@ -73,7 +73,7 @@ public class HomeFragment extends BaseFragment implements LocationListener, OnMa
         spanString.setSpan(new UnderlineSpan(), 0, spanString.length() - 2, 0);
         binding.dealers.setText(spanString);
 
-        if (checkPlayServices(getActivity())) {
+        if (PlayServicesUtils.checkPlayServices(getActivity())) {
             binding.map.getMapAsync(this);
             binding.map.onCreate(savedInstanceState);
             binding.map.onResume();
@@ -91,7 +91,8 @@ public class HomeFragment extends BaseFragment implements LocationListener, OnMa
             }
         });
 
-        title = "";
+        title = getString(R.string.dealers);
+        back_title = "";
 
         return binding.getRoot();
     }
@@ -217,16 +218,4 @@ public class HomeFragment extends BaseFragment implements LocationListener, OnMa
         }.execute();
     }
 
-    private boolean checkPlayServices(Activity activity) {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(activity);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            }
-            return false;
-        }
-        return true;
-    }
 }

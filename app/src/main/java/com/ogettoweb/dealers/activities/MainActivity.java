@@ -59,12 +59,14 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search: {
-                // TODO: 06.08.2016 add search
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 break;
             }
             case android.R.id.home: {
-                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                if (!fragmentManager.popBackStackImmediate()) {
+                    finish();
+                }
                 break;
             }
             default: {
