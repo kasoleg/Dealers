@@ -4,6 +4,15 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+
+    signingConfigs {
+        release {
+            keyAlias 'dealers'
+            keyPassword 'android'
+            storeFile file('../dealers-android.jks')
+            storePassword 'android'
+        }
+    }
     defaultConfig {
         applicationId "com.ogettoweb.dealers"
         minSdkVersion 15
@@ -11,11 +20,17 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     dataBinding {
