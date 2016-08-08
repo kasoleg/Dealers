@@ -30,7 +30,8 @@ public class DealersFragment extends BaseFragment {
     private FragmentDealersBinding binding;
     private List<Dealer> dealers;
     private boolean alphabet = false;
-    private boolean distance = false;
+    private boolean distance = true;
+    private boolean sortType = true;
     private Location myLocation;
 
     public List<Dealer> getDealers() {
@@ -73,24 +74,50 @@ public class DealersFragment extends BaseFragment {
             @Override
             public void onAlphabetClick(View view) {
                 sortByAlphabet();
+                updateUi();
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onDistanceClick(View view) {
                 sortByDistance();
+                updateUi();
                 adapter.notifyDataSetChanged();
             }
         });
 
+        updateUi();
+
         return binding.getRoot();
     }
 
+    private void updateUi() {
+        if (sortType) {
+            binding.alphabet.setTypeface(null, Typeface.BOLD_ITALIC);
+            binding.distance.setTypeface(null, Typeface.ITALIC);
+            binding.distanceArrow.setVisibility(View.INVISIBLE);
+            binding.alphabetArrow.setVisibility(View.VISIBLE);
+        } else {
+            binding.distance.setTypeface(null, Typeface.BOLD_ITALIC);
+            binding.alphabet.setTypeface(null, Typeface.ITALIC);
+            binding.alphabetArrow.setVisibility(View.INVISIBLE);
+            binding.distanceArrow.setVisibility(View.VISIBLE);
+        }
+        if (alphabet) {
+            binding.alphabetArrow.setImageResource(R.drawable.ic_down);
+        } else {
+            binding.alphabetArrow.setImageResource(R.drawable.ic_up);
+        }
+        if (distance) {
+            binding.distanceArrow.setImageResource(R.drawable.ic_down);
+        } else {
+            binding.distanceArrow.setImageResource(R.drawable.ic_up);
+        }
+    }
+
     private void sortByAlphabet() {
-        binding.alphabet.setTypeface(null, Typeface.BOLD_ITALIC);
-        binding.distance.setTypeface(null, Typeface.ITALIC);
-        binding.distanceArrow.setVisibility(View.INVISIBLE);
-        binding.alphabetArrow.setVisibility(View.VISIBLE);
+        sortType = true;
+        distance = true;
         if (dealers.size() > 0) {
             if (alphabet) {
                 Collections.sort(dealers, new Comparator<Dealer>() {
@@ -99,7 +126,6 @@ public class DealersFragment extends BaseFragment {
                         return object1.getCompany().compareTo(object2.getCompany());
                     }
                 });
-                binding.alphabetArrow.setImageResource(R.drawable.ic_up);
                 alphabet = false;
             } else {
                 Collections.sort(dealers, new Comparator<Dealer>() {
@@ -108,17 +134,14 @@ public class DealersFragment extends BaseFragment {
                         return object2.getCompany().compareTo(object1.getCompany());
                     }
                 });
-                binding.alphabetArrow.setImageResource(R.drawable.ic_down);
                 alphabet = true;
             }
         }
     }
 
     private void sortByDistance() {
-        binding.distance.setTypeface(null, Typeface.BOLD_ITALIC);
-        binding.alphabet.setTypeface(null, Typeface.ITALIC);
-        binding.alphabetArrow.setVisibility(View.INVISIBLE);
-        binding.distanceArrow.setVisibility(View.VISIBLE);
+        sortType = false;
+        alphabet = false;
         if (dealers.size() > 0) {
             if (distance) {
                 Collections.sort(dealers, new Comparator<Dealer>() {
@@ -140,7 +163,6 @@ public class DealersFragment extends BaseFragment {
                         return 0;
                     }
                 });
-                binding.distanceArrow.setImageResource(R.drawable.ic_up);
                 distance = false;
             } else {
                 Collections.sort(dealers, new Comparator<Dealer>() {
@@ -162,7 +184,6 @@ public class DealersFragment extends BaseFragment {
                         return 0;
                     }
                 });
-                binding.distanceArrow.setImageResource(R.drawable.ic_down);
                 distance = true;
             }
         }
