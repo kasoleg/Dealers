@@ -132,4 +132,18 @@ public class Dealer implements Parcelable {
         }
         return goodsString.toString();
     }
+
+    public String getContactsAsString() {
+        StringBuilder phoneString = new StringBuilder();
+        if (goods == null) {
+            return null;
+        }
+        for (String phone : phones) {
+            phoneString.append(phone + ", ");
+        }
+        if (phoneString.length() > 0) {
+            phoneString.deleteCharAt(phoneString.length() - 2);
+        }
+        return phoneString.toString();
+    }
 }

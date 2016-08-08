@@ -51,7 +51,7 @@
             android:layout_below="@+id/map"
             android:gravity="center"
             android:onClick="@{click::onDealersClick}"
-            android:text="@string/dealers_list"
+            android:text="@string/dealers_list_arrow"
             android:textStyle="italic"
             app:layout_heightPercent="10%"
             app:layout_widthPercent="100%" />
